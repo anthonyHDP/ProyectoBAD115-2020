@@ -14,7 +14,7 @@ class CreateDocumentosIdentificacionTable extends Migration
     public function up()
     {
         Schema::create('documentos_identificacion', function (Blueprint $table) {
-            $table->char('numero_documento_identificacion',9);
+            $table->increments('numero_documento_identificacion');
             $table->integer('id_tipo_identificacion')->unsigned();
             $table->string('detalles',100)->nullable();
             $table->timestamps();
@@ -22,6 +22,7 @@ class CreateDocumentosIdentificacionTable extends Migration
             $table->primary('numero_documento_identificacion');
             $table->foreign('id_tipo_identificacion')->references('id_tipo_identificacion')->on('tipos_identificacion');
         });
+        DB::table('documentos_identificacion')->insert(array('id_tipo_identificacion'=>'1', 'numero_documento_identificacion'=>'9898789', 'detalles'=>'Es el dui'));
     }
 
     /**
