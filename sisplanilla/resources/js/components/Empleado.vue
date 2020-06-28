@@ -20,25 +20,28 @@
                             <div class="col-md-6">
                                 <div class="input-group">
                                     <select class="form-control col-md-3" v-model="criterio">
-                                      <option value="primer_nombre,segundo_nombre">Nombres de Empleado</option>
-                                      <option value="primer_apellido,segundo_apellido">Apellidos de Empleado</option>
+                                      <option value="codigo_jefe">Codio-Jefe</option>
+                                      <option value="codigo_empleado">Codigo-Empleado</option>
+                                     <option value="titulo">Genero</option>
                                     </select>
                                     <input type="text" v-model="buscar" @keyup.enter="listarEmpleado(1,buscar,criterio)" class="form-control" placeholder="Texto a buscar">
-                                    <button type="submit" @click="listarEmpleado(1,buscar,criterio)"  class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
+                                    <button type="submit" @click="listarEmpleado(1,buscar,criterio)"  class="btn btn-primary btn-buscar"><i class="fa fa-search"></i> Buscar</button>
                                 </div>
                             </div>
                         </div>
                         <table class="table table-bordered table-striped table-sm">
                             <thead>
                                 <tr>
-                                    <th style="text-align: center">ID</th>
+                                    <!--<th style="text-align: center">ID</th>-->
                                     <th>Codigo Empleado</th>
+                                    <th>Codigo Jefe</th>
                                     <th>Primer Nombre</th>
                                     <th>Segundo Nombre</th>
                                     <th>Primer Apellido</th>
                                     <th>Segundo Apellido</th>
-                                    <th>Email-Personal</th>
                                     <th>Email-Institucional</th>
+                                    <th>Genero</th>
+                                    <th>Profesion</th>
                                     <th>Estado</th>
                                     <th style="text-align: center">Opciones</th>
                                 </tr>
@@ -46,18 +49,20 @@
                             <tbody>
                                  <tr v-for="empleado in arrayEmpleado" :key="empleado.codigo_empleado">
                                     <td v-text="empleado.codigo_empleado" style="text-align: center"></td>
+                                    <td v-text="empleado.codigo_jefe"></td>
                                     <td v-text="empleado.primer_nombre"></td>
                                     <td v-text="empleado.segundo_nombre"></td>
                                     <td v-text="empleado.primer_apellido"></td>
                                     <td v-text="empleado.segundo_apellido"></td>
-                                    <td v-text="empleado.email_personal"></td>
                                     <td v-text="empleado.email_institucional"></td>
+                                    <td v-text="empleado.titulo"></td>
+                                    <td v-text="empleado.profest"></td>
 
                                     <td v-if="empleado.activo == '1'">Sí</td>
                                     <td v-if="empleado.activo == '0'">No</td>
                                     
                                     <td style="text-align: center;">
-                                        <button type="button" @click="abrirModal('empleado', 'actualizar', usuario)" class="btn btn-warning btn-sm btn-circle-text-white">
+                                        <button type="button" @click="abrirModal('empleado', 'actualizar', empleado)" class="btn btn-warning btn-sm btn-circle-text-white">
                                           <i class="icon-pencil"></i>
                                         </button>
                                         <button type="button" @click="abrirModalEliminar(empleado)" class="btn btn-danger btn-sm btn-circle">
@@ -141,7 +146,7 @@
                                     <a class="nav-link" id="v-pills-messages_identificacion-tab" data-toggle="pill" href="#v-pills-messages_identificacion" role="tab" aria-controls="v-pills-messages_identificacion" aria-selected="false">Ingreso de Documentos de Identificacion</a>
                                     <a class="nav-link" id="v-pills-settings_empleado-tab" data-toggle="pill" href="#v-pills-settings_empleado" role="tab" aria-controls="v-pills-settings_empleado" aria-selected="false">Ingreso de Datos de Empleados</a>
                                      <a class="nav-link" id="v-pills-settings_codigo_jefe-tab" data-toggle="pill" href="#v-pills-settings_codigo_jefe" role="tab" aria-controls="v-pills-settings_codigo_jefe" aria-selected="false">Asignacion de Jefe</a>
-                                    <a class="nav-link" id="v-pills-settings_contrato-tab" data-toggle="pill" href="#v-pills-settings_contrato" role="tab" aria-controls="v-pills-settings" aria-selected="false">Contrato de Trabajo</a>
+                                    
                                    
                                     </div>
                                 </div>
@@ -362,46 +367,7 @@
                                      -->
 
                                     </div>
-                                    <div class="tab-pane fade" id="v-pills-settings_contrato" role="tabpanel" aria-labelledby="v-pills-settings_contrato-tab">
-                                
-                                        <div class="form-group row">
-                                            <label class="col-md-3 form-control-label" for="text-input">Tipo de Contrato</label>
-                                            <div class="col-md-9">
-                                                <input type="text" v-model="email_personal" class="form-control" placeholder="Ingrese Tipo de Contrato">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-md-3 form-control-label" for="text_input">Fecha de Inicio de Contrato</label>
-                                            <div class="col-md-9">
-                                                <input type="date" v-model="email_institucional" class="form-control" placeholder="Ingrese Fecha Inicial">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-md-3 form-control-label" for="text_input">Fecha de Finalizacion de Contrato</label>
-                                            <div class="col-md-9">
-                                                <input type="text" v-model="fecha_nacimiento" class="form-control" placeholder="Ingrese Fecha de Finalizacion">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-md-3 form-control-label" for="text_input">Duracion de Contrato</label>
-                                            <div class="col-md-9">
-                                                <input type="text" v-model="identificador_isss" class="form-control" placeholder="Ingrese La Duracion de Contrato">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-md-3 form-control-label" for="text_input">Salario de Empleado</label>
-                                            <div class="col-md-9">
-                                                <input type="text" v-model="identificador_nup" class="form-control" placeholder="Ingrese el Salario">
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="form-group">
-                                            <label for="activo">Vigencia de Contrato</label>
-                                            
-                                            
-                                        </div>
-                                
-                                    </div>
+                                 
                                      
                                     </div>
                                 </div>
@@ -484,6 +450,8 @@
               errorEmpleado: 0,
               errorMostrarMsjEmpleado:[],
               Empleado_id:0,
+              nombres:'',
+              apellidos:'',
               pagination:{
                   'total':0,        
                   'current_page':0,
@@ -493,7 +461,7 @@
                   'to':0           
               },
               offset:3,
-              criterio:'nombre',
+              criterio:'codigo_empleado',
               buscar:''
             
           }   
@@ -795,7 +763,26 @@
                var password_input =  document.getElementById("password_input_e");
                this.errorEmpleado=0;
                this.errorMostrarMsjEmpleado=[]; 
-               if(!this.primer_nombre)this.errorMostrarMsjEmpleado.push("El Nombre de la Empleado no puede estar Vacio");
+               if(!this.primer_nombre)this.errorMostrarMsjEmpleado.push("El Primer-Nombre de  Empleado no puede estar Vacio");
+               if(!this.segundo_nombre)this.errorMostrarMsjEmpleado.push("El Segundo-Nombre de  Empleado no puede estar Vacio");
+               if(!this.primer_apellido)this.errorMostrarMsjEmpleado.push("El Primer-Apellido de Empleado no puede estar Vacio");
+               if(!this.segundo_apellido)this.errorMostrarMsjEmpleado.push("El Segundo-Apellido de Empleado no puede estar Vacio");
+               if(!this.ubicacion)this.errorMostrarMsjEmpleado.push("La Ubicacion no puede estar vacia");
+               if(!this.numero)this.errorMostrarMsjEmpleado.push("El numero de telefono no puede estar Vacio");
+               if(!this.fecha_nacimiento)this.errorMostrarMsjEmpleado.push("La fecha de nacimiento no puede estar Vacia");
+               if(!this.identificador_isss)this.errorMostrarMsjEmpleado.push("El Identificador ISSS de Empleado no puede estar Vacio");
+               if(!this.identificador_nup)this.errorMostrarMsjEmpleado.push("El Identificador NUP de Empleado no puede estar Vacio");
+               if(!this.identificador_nit)this.errorMostrarMsjEmpleado.push("El Identificador NIT de Empleado no puede estar Vacio");
+               //if (this.codigo_puesto==0) this.errorMostrarMsjContrato.push("Seleccione el Puesto de Trabajo.");
+               //if (this.codigo_departamento==0) this.errorMostrarMsjContrato.push("Seleccione el Departamento del Pais.");
+               //if (this.codigo_municipio==0) this.errorMostrarMsjContrato.push("Seleccione el Municipio del Pais.");
+               //if (this.id_genero==0) this.errorMostrarMsjContrato.push("Seleccione el Genero.");
+               //if (this.id_estado_civil==0) this.errorMostrarMsjContrato.push("Seleccione el Estado Civil.");
+
+               
+               
+               
+               
                
                if(this.errorMostrarMsjEmpleado.length) this.errorEmpleado=1;
 
@@ -815,7 +802,7 @@
                    'segundo_apellido':this.segundo_apellido,  
                    'email_personal':this.email_personal,
                    'email_institucional':this.email_institucional,
-                   'fecha_nacimiento':this.fecha_nacimiento,
+                   'fecha_nacimiento':this.fecha_nacimiento.replace("-", "/").replace("-", "/").substring(2, 10),
                    'identificador_isss':this.identificador_isss,
                    'identificador_nup':this.identificador_nup,
                    'identificador_nit':this.identificador_nit,
@@ -840,7 +827,7 @@
                          
                }).then(function (response) {
                      me.cerrarModal();
-                     me.listarEmpleado(1,'','primer_nombre');
+                     me.listarEmpleado(1,'','codigo_empleado');
                 })
                 .catch(function (error) {
                         console.log(error);
@@ -884,7 +871,7 @@
 
                }).then(function (response) {
                      me.cerrarModal();
-                     me.listarEmpleado(1,'','primer_nombre');
+                     me.listarEmpleado(1,'','codigo_empleado');
                 })
                 .catch(function (error) {
                         console.log(error);
@@ -900,12 +887,13 @@
                this.segundo_apellido='';
                this.codigo_empleado_res = '';
                this.codigo_jefe='';
+               this.nombres='';
+               this.apellidos='';
                this.empleado=[];
-                if(document.getElementById("empleado_input_e")!=null) document.getElementById("empleado_input_e").value = "";
-                if(document.getElementById("empleado_input_e")!=null) document.getElementById("empleado_input_e").style.border = "1px solid #ccc";
-                document.getElementById("rol_input_e").style.border = "1px solid #ccc";
-                if(document.getElementById("password_input_e")!=null) document.getElementById("password_input_e").style.border = "1px solid #ccc";
-                },
+
+                
+            },
+
             abrirModal(modelo,accion,data=[]){
                 switch(modelo){
                     case "empleado":
@@ -939,6 +927,7 @@
                                           this.codigo_departamento=0;
                                           this.id_tipo_identificacion=0;
                                           this.id_tipo_contacto_telefonico=0;
+                                          this.codigo_jefe='';
                                          
                                           
                   
@@ -950,7 +939,7 @@
                                  case 'actualizar':
                                      {
                                          //console.log(data);
-                                         this.modal=2;
+                                         this.modal=1;
                                          this.tituloModal='Actualizar Empleado';
                                          this.tipoAccion=2;
                                          this.primer_nombre=data['primer_nombre'];

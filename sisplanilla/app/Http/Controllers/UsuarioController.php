@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Hash;
-
 use Illuminate\Http\Request;
 use App\Usuario;
 use App\Rol;
@@ -21,12 +19,14 @@ class UsuarioController extends Controller
 
         if ($buscar==''){
             $usuarios = Usuario::join('roles', 'usuarios.id_rol', '=', 'roles.id_rol')
-            ->select('usuarios.id_usuario', 'usuarios.id_rol', 'usuarios.codigo_empleado', 'usuarios.username', 'usuarios.password', 'usuarios.activo', 'usuarios.first_session', 'usuarios.last_session', 'usuarios.intentos_fallidos', 'roles.nombre as nombre_rol')
+            ->select('usuarios.id_usuario', 'usuarios.id_rol', 'usuarios.codigo_empleado', 'usuarios.username', 'usuarios.password', 'usuarios.activo',
+             'usuarios.first_session', 'usuarios.last_session', 'usuarios.intentos_fallidos', 'roles.nombre as nombre_rol')
             ->orderBy('usuarios.id_usuario', 'desc')->paginate(6);
         }
         else{
             $usuarios = Usuario::join('roles', 'usuarios.id_rol', '=', 'roles.id_rol')
-            ->select('usuarios.id_usuario', 'usuarios.id_rol', 'usuarios.codigo_empleado', 'usuarios.username', 'usuarios.password', 'usuarios.activo', 'usuarios.first_session', 'usuarios.last_session', 'usuarios.intentos_fallidos', 'roles.nombre as nombre_rol')
+            ->select('usuarios.id_usuario', 'usuarios.id_rol', 'usuarios.codigo_empleado', 'usuarios.username', 'usuarios.password', 'usuarios.activo', 
+            'usuarios.first_session', 'usuarios.last_session', 'usuarios.intentos_fallidos', 'roles.nombre as nombre_rol')
             ->where('usuarios.'.$criterio, 'like', '%'. $buscar . '%')
             ->orderBy('usuarios.id_usuario', 'desc')->paginate(6);
         }
@@ -98,8 +98,7 @@ class UsuarioController extends Controller
         //$usuario->password = $request->password;
         //$usuario->SHA256($request->password);
         //$usuario->hash('sha256', $request->password);
-        //$usuario->password = hash('sha256', $request->password);
-        $usuario->password =Hash::make(hash('sha256', $request->password));
+        $usuario->password = hash('sha256', $request->password);
         $usuario->activo = $request->activo;
         //$usuario->first_session = $request->first_session;
         //$usuario->last_session = $request->last_session;
@@ -124,5 +123,19 @@ class UsuarioController extends Controller
         if(!$request->ajax()) return redirect('/');
         $usuario = Usuario::findOrFail($request->id_usuario);
         $usuario->delete();   
+    }
+   //Funcion PDF
+    public function listarPdf(){
+
+        $usuarios = Usuario::join('roles', 'usuarios.id_rol', '=', 'roles.id_rol')
+        ->select('usuarios.id_usuario', 'usuarios.id_rol', 'usuarios.codigo_empleado', 'usuarios.username', 'usuarios.password', 'usuarios.activo',
+         'usuarios.first_session', 'usuarios.last_session', 'usuarios.intentos_fallidos', 'roles.nombre as nombre_rol')
+        ->orderBy('usuarios.username', 'desc')->get();
+             
+        $cont=Usuario::count();
+        $pdf= \PDF::loadView('pdf.usuarios2pdf',['usuarios'=>$usuarios,'cont'=>$cont]);
+        return $pdf->stream('usuarios.pdf');
+        
+
     }
 }

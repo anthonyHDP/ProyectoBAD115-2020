@@ -32,6 +32,7 @@ class CreateEmpleadosTable extends Migration
             $table->integer('id_estado_civil')->unsigned();
             $table->integer('id_genero')->unsigned();
             $table->integer('id_contacto_telefonico')->unsigned();
+            $table->boolean('activo')->default(1);
             $table->timestamps();
             
             $table->primary('codigo_empleado');

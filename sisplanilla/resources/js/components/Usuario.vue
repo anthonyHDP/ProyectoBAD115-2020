@@ -14,6 +14,8 @@
                         <button type="button" @click="abrirModal('usuario', 'registrar')"  class="btn btn-success btn-nuevo">
                             <i class="icon-plus"></i> <span style="margin-left:2%">Nuevo</span>
                         </button>
+                        <button  type="button" @click="cargarPdf()" class="btn btn-warning btn-nuevo"  onClick="document.formulario.action='verPDF.php'; document.formuario.submit();">
+                         <i class="icon-plus"></i>&nbsp;<span style="margin-left:2%">Reporte-Planillas</span></button>
                     </div>
                     <div class="card-body">
                         <div class="form-group row">
@@ -25,6 +27,7 @@
                                     </select>
                                     <input type="text" v-model="buscar" @keyup.enter="listarUsuario(1, buscar, criterio)" class="form-control col-md-5" placeholder="Texto a buscar">
                                     <button type="submit" @click="listarUsuario(1, buscar, criterio)" class="btn btn-primary btn-buscar"><i class="fa fa-search"></i> Buscar</button>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -60,6 +63,8 @@
                                         <button type="button" @click="abrirModalEliminar(usuario)" class="btn btn-danger btn-sm btn-circle">
                                           <i class="icon-trash"></i>
                                         </button>
+                                        <button  type="button" @click="cargarPdf()" class="btn btn-success btn-nuevo">
+                                        <i class="icon-plus"></i>&nbsp;<span style="margin-left:2%">Boleta-Pago</span></button>
                                     </td>
                                 </tr>                                
                             </tbody>
@@ -266,6 +271,9 @@
                 .catch(function (error) {
                     console.log(error);
                 });
+            },
+             cargarPdf(){
+                window.open('http://localhost:8000/usuario/listarPdf','blanck');
             },
             selectRol(){
                 let me=this;

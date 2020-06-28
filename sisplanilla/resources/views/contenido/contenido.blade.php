@@ -18,14 +18,22 @@
         </template>
 
         <template v-if="menu==4">
-            <menu_valido></menu_valido>
+            <empleado></empleado>
         </template>
 
         <template v-if="menu==5">
+            <contrato></contrato>
+        </template>
+
+        <template v-if="menu==6">
+            <menu_valido></menu_valido>
+        </template>
+
+        <template v-if="menu==7">
             <item_menu></item_menu>
         </template>
         
-        <template v-if="menu==6">
+        <template v-if="menu==8">
             <empresa></empresa>
         </template>
 
